@@ -3,6 +3,8 @@
 \documentclass[sigconf,nonacm]{acmart}
 \usepackage[UTF8,scheme=plain,fontset=fandol]{ctex}
 \usepackage{amsmath,booktabs,graphicx}
+\usepackage{xurl}
+\emergencystretch=1em
 \setcopyright{none}
 \settopmatter{printacmref=false,printccs=false,printfolios=true}
 \renewcommand{\shortauthors}{信息检索原理课程项目}
@@ -46,17 +48,17 @@ SciFact 面向科学论断核查，提供论断、科学摘要与证据标注\ci
 
 \section{数据、划分与防止评价泄漏}
 \subsection{数据结构与规模}
-实验使用 BEIR 发布的 SciFact 压缩包。文档文件 \texttt{corpus.jsonl} 包含 5,183 条文档，每条具有独立文档编号、标题和摘要。查询文件 \texttt{queries.jsonl} 提供科学论断文本，相关性文件采用三列格式：查询编号、文档编号和相关性分数。官方相关性集合分为 809 个训练查询与 300 个测试查询；本项目分别读取对应的 \texttt{train.tsv} 和 \texttt{test.tsv}。
+实验使用 BEIR 发布的 SciFact 压缩包。文档文件 \path{corpus.jsonl} 包含 5,183 条文档，每条具有独立文档编号、标题和摘要。查询文件 \path{queries.jsonl} 提供科学论断文本，相关性文件采用三列格式：查询编号、文档编号和相关性分数。官方相关性集合分为 809 个训练查询与 300 个测试查询；本项目分别读取对应的 \path{train.tsv} 和 \path{test.tsv}。
 
 每篇文档的索引文本由标题、一个空格和摘要连接得到。标题仅出现一次，没有人为提高标题权重，也没有额外引入作者、年份或引用网络。查询保持原始文本，不使用测试标注进行改写。三个检索器都使用相同文档文本，因此差异来自表示和排序方法，而不是偷偷给某个系统更多信息。
 
 \subsection{开发集的构造}
-项目不把测试查询拿来搜索参数。先将官方训练查询编号排序，再用随机种子 42 从中抽取 200 个编号，作为本实验的开发查询。其余 609 个训练查询在本轮实验中不参与调参或评价。这个选择减少了重复实验时间，同时提供一个固定、可检查的开发集合。全部 200 个编号被写入 \texttt{results/tuning.json}，而不是只记录随机种子。
+项目不把测试查询拿来搜索参数。先将官方训练查询编号排序，再用随机种子 42 从中抽取 200 个编号，作为本实验的开发查询。其余 609 个训练查询在本轮实验中不参与调参或评价。这个选择减少了重复实验时间，同时提供一个固定、可检查的开发集合。全部 200 个编号被写入 \path{results/tuning.json}，而不是只记录随机种子。
 
 索引器读取全部文档以计算词频和文档频率，属于该检索任务允许使用的无监督集合统计；它不读取测试查询的相关文档标签。开发参数选择结束并保存之后，实验程序才读取测试相关性文件。程序检查训练与测试查询编号交集为空，从控制流程和数据层面共同限制标签泄漏。查询编号与文档编号属于不同命名空间，不能只因为字符串相同就删除某篇候选文档；当前数据的两个编号集合事实上没有交集。
 
 \subsection{数据完整性与可追溯性}
-下载脚本使用官方公开链接，验证压缩包 MD5：\texttt{5f7d1de60b170fc8027bb7898e2efca1}。解压前检查成员目标路径是否仍位于数据目录，避免解压路径越界。已有正确数据无需重复下载。实验还为语料、查询和两个相关性文件分别计算 SHA--256，并将结果存入 \texttt{environment.json}。
+下载脚本使用官方公开链接，验证压缩包 MD5：\path{5f7d1de60b170fc8027bb7898e2efca1}。解压前检查成员目标路径是否仍位于数据目录，避免解压路径越界。已有正确数据无需重复下载。实验还为语料、查询和两个相关性文件分别计算 SHA--256，并将结果存入 \path{environment.json}。
 
 这些指纹用于识别实验实际使用的输入，而不是证明标注完美无误。若未来数据版本发生变化，应当重新运行实验，不能继续沿用本文表格。项目不把数据本体复制进代码实现；复现者可以用下载脚本获取相同公开输入，再通过哈希确认是否一致。
 
@@ -79,7 +81,7 @@ SciFact 面向科学论断核查，提供论断、科学摘要与证据标注\ci
 这个对照帮助隔离排序函数差异：BM25 与词级 TF--IDF 的基本词汇单位相同，但词频饱和、长度处理与归一化机制不同。如果二者排名高度相似，RRF 可能只是重复强化已有意见，无法明显弥补遗漏。这种现象不能简单归咎于 RRF 公式，而需要结合候选互补程度解释。
 
 \subsection{字符级 TF--IDF}
-字符检索使用 \texttt{char\_wb} 分析器，在词边界内提取长度为 3 至 5 的字符片段；文档频率至少为 2，最多保留 100,000 个特征。它同样使用次线性词频、平滑 IDF 与 $L_2$ 归一化。这里的 ``字符'' 指英文文本的字符片段，而不是中文分字检索。
+字符检索使用 \path{char_wb} 分析器，在词边界内提取长度为 3 至 5 的字符片段；文档频率至少为 2，最多保留 100,000 个特征。它同样使用次线性词频、平滑 IDF 与 $L_2$ 归一化。这里的 ``字符'' 指英文文本的字符片段，而不是中文分字检索。
 
 字符片段可以为缩写、连接形式或词形变化提供部分匹配，因此与完整词表示存在差异。不过，部分字符串相同不保证论断和文档在科学意义上相关。字符方法也可能过度关注很长的物种名或高频专业片段，把只共享主题的文献排得过高。我们将这种机制作为待检验解释，而不预先认定字符检索一定更好。
 
@@ -101,10 +103,12 @@ S_{\mathrm{RRF}}(d)=\sum_{j:d\in L_j}\frac{1}{k+r_j(d)}.
 \subsection{归一化分数融合对照}
 排名融合不是唯一可行方案。项目还实现对两个截断结果列表分别做 min--max 归一化，再线性组合的对照：
 \begin{equation}
-\widehat s_j(d)=\frac{s_j(d)-s_{j,\min}}{s_{j,\max}-s_{j,\min}},\quad
-S(d)=\alpha\widehat s_1(d)+(1-\alpha)\widehat s_2(d).
+\begin{aligned}
+\widehat s_j(d)&=\frac{s_j(d)-s_{j,\min}}{s_{j,\max}-s_{j,\min}},\\
+S(d)&=\alpha\widehat s_1(d)+(1-\alpha)\widehat s_2(d).
+\end{aligned}
 \end{equation}
-未出现在该路候选中的文档贡献为零；若列表内分数完全相同，已有候选的归一化分数定义为 1。开发集搜索 $\alpha\in\{0,0.25,0.5,0.75,1\}$，最终选择 $\alpha=1$，开发集 nDCG@10 为 0.6996。这意味着当前两路配置下，开发集宁愿只保留 BM25 分数，也不支持等权混合。
+未出现在该路候选中的文档贡献为零；若列表内分数完全相同，已有候选的归一化分数定义为 1。开发集搜索 $\alpha$ 分别取 0、0.25、0.5、0.75 和 1，最终选择 $\alpha=1$，开发集 nDCG@10 为 0.6996。这意味着当前两路配置下，开发集宁愿只保留 BM25 分数，也不支持等权混合。
 
 这个端点结果具有解释价值，不能为了让 ``融合'' 显得有效而排除。本文报告的实现仍计算两个基础列表后再融合，因此即便权重为零，时间表里仍包含该路开销。工程部署可以针对端点配置跳过无用检索；本文的实测时间描述当前程序，而不是该方法的性能下界。
 
@@ -132,10 +136,12 @@ S(d)=\alpha\widehat s_1(d)+(1-\alpha)\widehat s_2(d).
 
 \section{评价指标与统计协议}
 \subsection{排序质量}
-项目报告 nDCG@10、MAP@100、MRR@10 和 Recall@100。所有查询使用相同的宏平均权重，未标注文档按不相关处理。nDCG 的收益直接使用相关性标注值，与 \texttt{trec\_eval} 的 \texttt{ndcg\_cut} 定义一致：
+项目报告 nDCG@10、MAP@100、MRR@10 和 Recall@100。所有查询使用相同的宏平均权重，未标注文档按不相关处理。nDCG 的收益直接使用相关性标注值，与 \path{trec_eval} 的 \path{ndcg_cut} 定义一致：
 \begin{equation}
-\mathrm{DCG}@10=\sum_{i=1}^{10}\frac{\mathrm{rel}(d_i)}{\log_2(i+1)},\quad
-\mathrm{nDCG}@10=\frac{\mathrm{DCG}@10}{\mathrm{IDCG}@10}.
+\begin{aligned}
+\mathrm{DCG}@10&=\sum_{i=1}^{10}\frac{\mathrm{rel}(d_i)}{\log_2(i+1)},\\
+\mathrm{nDCG}@10&=\frac{\mathrm{DCG}@10}{\mathrm{IDCG}@10}.
+\end{aligned}
 \end{equation}
 SciFact 本实验使用的相关性为二值。nDCG 强调用户先看到的十篇文档，并允许相关文档数量不相同的查询进行比较。MRR@10 取前十位首个相关文档名次的倒数，若前十位没有相关文档则为零，反映找到第一份证据的难易程度。
 
@@ -148,7 +154,7 @@ MAP 是 AP 在查询上的平均。注意分母是\emph{全部相关文档数}�
 评价程序对无相关文档查询和空结果列表明确定义零值，避免除零或静默丢弃查询。数据文件和实验输出均保留查询编号，所以既能检查总体均值，也能追踪单条查询。只报告平均值会隐藏严重失败，本项目因此另外输出逐查询指标和正反案例。
 
 \subsection{配对 bootstrap}
-比较某种融合方法与 BM25 时，我们先为每个测试查询计算 nDCG@10 差值 $\Delta_q$。使用随机种子 42，从这 300 个差值中有放回抽取 300 个，求样本均值，重复 2,000 次。均值分布的 2.5 与 97.5 百分位构成本文的 95\% percentile bootstrap 区间。
+比较某种融合方法与 BM25 时，我们先为每个测试查询计算 nDCG@10 差值 $\Delta_q$。使用随机种子 42，从这 300 个差值中有放回抽取 300 个，求样本均值，重复 2,000 次。均值分布的 2.5 与 97.5 百分位构成本文的 95\% 百分位 bootstrap 区间。
 
 配对重采样使同一个查询在两个方法下对应，避免把查询难度差异误当成方法差异。这里的区间用于描述当前测试集合上平均差值的不确定性；它并不能解决数据领域偏差，也不能证明对所有未来查询有效。我们同时报告胜、平、负查询数，帮助理解均值是来自少量大幅变化还是广泛改善。由于比较了多种配置，本文不依据这些区间进一步宣称跨方法的严格最优性。
 
@@ -203,7 +209,7 @@ BM25 索引构建约需 0.487 秒，词级 TF--IDF 约需 0.479 秒，字符级 
 
 平均基础查询时间分别约为 BM25 7.45 毫秒、词级 TF--IDF 7.32 毫秒、字符级 TF--IDF 34.85 毫秒。BM25 与字符的 RRF 平均约为 42.46 毫秒，约为 BM25 的 5.70 倍；三路融合约为 49.83 毫秒。融合公式自身很轻，主要成本来自多路候选生成，尤其是字符向量的稀疏匹配。将 RRF 描述为 ``几乎免费'' 会混淆融合步骤与整条查询链路。
 
-表中时间不代表性能充分优化后的产品系统。我们使用 Python 排序和稀疏矩阵运算，没有近似检索、倒排跳跃、向量批处理或多路并行。即便如此，相同环境下的相对成本仍能提醒设计者：当质量增量小于一个百分点、置信区间又跨零时，是否值得启用慢路线应取决于服务目标。如果任务重视候选覆盖，可优先考虑 RRF-char；若要求快速返回第一篇证据，BM25 已是很有竞争力的基线。
+表中时间不代表性能充分优化后的产品系统。我们使用 Python 排序和稀疏矩阵运算，没有近似检索、倒排跳跃、向量批处理或多路并行。即便如此，相同环境下的相对成本仍能提醒设计者：当质量增量小于一个百分点、置信区间又跨零时，是否值得启用慢路线应取决于服务目标。如果任务重视候选覆盖，可优先考虑字符融合；若要求快速返回第一篇证据，BM25 已是很有竞争力的基线。
 
 更合适的工程决策可能是按查询选择路线，而不是对所有查询无差别融合。例如完整词匹配已经给出清楚证据时，可以跳过字符检索；当查询包含连接词形、拼写变体或词表外片段时，再触发第二路。这是由结果产生的后续假设，本文尚未训练路由器或验证它的节省比例，所以不报告任何不存在的加速数字。
 
@@ -236,19 +242,19 @@ BM25 索引构建约需 0.487 秒，词级 TF--IDF 约需 0.479 秒，字符级 
 正反案例共同说明，融合的收益依赖候选之间的互补质量，而不只依赖差异有多大。两个检索器完全一致时难以增加信息；差异很大却充满误匹配时，又可能损害强基线。一个后续方向是用开发集估计查询级可靠性，或者让已有高置信候选保留更多影响力。不过，这需要额外设计与独立评价，本项目的已完成结果只支持其作为后续研究问题。
 
 \section{复现步骤与交付物}
-代码不依赖私人账号、访问令牌或远程推理服务。复现者在仓库根目录建立 Python 虚拟环境，安装 \texttt{requirements.txt} 中的依赖，运行下载脚本获取公开数据，再执行实验脚本。核心命令如下；在 Windows 环境中可将 \texttt{python} 替换为虚拟环境解释器的完整路径。
+代码不依赖私人账号、访问令牌或远程推理服务。复现者在仓库根目录建立 Python 虚拟环境，安装 \path{requirements.txt} 中的依赖，运行下载脚本获取公开数据，再执行实验脚本。核心命令如下；在 Windows 环境中可将 \path{python} 替换为虚拟环境解释器的完整路径。
 \begin{quote}\small
-\texttt{python scripts/download\_data.py}\\
-\texttt{python -m unittest discover -s tests -v}\\
-\texttt{python scripts/run\_experiment.py}\\
-\texttt{python scripts/verify\_results.py}\\
-\texttt{python scripts/export\_report\_assets.py}
+\path{python scripts/download_data.py}\\
+\path{python -m unittest discover -s tests -v}\\
+\path{python scripts/run_experiment.py}\\
+\path{python scripts/verify_results.py}\\
+\path{python scripts/export_report_assets.py}
 \end{quote}
-交互演示可运行 \texttt{python scripts/search.py} 并传入一条英文查询。演示默认构建 BM25 和词级 TF--IDF 索引，用 $k=60$ 的 RRF 输出文档编号、标题和摘要片段。它展示完整检索功能，但不是实验表中效果较高的字符融合配置；这样设计是为了让首次演示不必等待字符索引构建。两者不能在汇报时混淆。
+交互演示可运行 \path{python scripts/search.py} 并传入一条英文查询。演示默认构建 BM25 和词级 TF--IDF 索引，用 $k=60$ 的 RRF 输出文档编号、标题和摘要片段。它展示完整检索功能，但不是实验表中效果较高的字符融合配置；这样设计是为了让首次演示不必等待字符索引构建。两者不能在汇报时混淆。
 
-\texttt{metrics.json} 与 \texttt{metrics.csv} 保存汇总数值，\texttt{per\_query.csv} 保存逐查询指标和查询时间，每种方法的 \texttt{.trec} 文件保存完整前一百名排名。\texttt{tuning.json} 记录开发编号、所有参数候选及最终选择，\texttt{paired\_bootstrap.json} 记录置信区间和胜平负。\texttt{environment.json} 记录依赖、数据规模、索引时间和哈希；\texttt{case\_studies.json} 保存正反案例。
+\path{metrics.json} 与 \path{metrics.csv} 保存汇总数值，\path{per_query.csv} 保存逐查询指标和查询时间，每种方法的 \path{.trec} 文件保存完整前一百名排名。\path{tuning.json} 记录开发编号、所有参数候选及最终选择，\path{paired_bootstrap.json} 记录置信区间和胜平负。\path{environment.json} 记录依赖、数据规模、索引时间和哈希；\path{case_studies.json} 保存正反案例。
 
-报告表格通过 \texttt{generated\_metrics.tex} 导入，部分常用数字通过 \texttt{generated\_summary.tex} 定义宏，科学图由结果 JSON 自动生成。编译报告时，应从 \texttt{reports} 目录执行 XeLaTeX、BibTeX，并再次执行两遍 XeLaTeX。正文使用 ACM \texttt{sigconf} 双栏文档类，中文由 \texttt{ctex} 的 Fandol 字体支持。
+报告表格通过 \path{generated_metrics.tex} 导入，部分常用数字通过 \path{generated_summary.tex} 定义宏，科学图由结果 JSON 自动生成。编译报告时，应从 \path{reports} 目录执行 XeLaTeX、BibTeX，并再次执行两遍 XeLaTeX。正文使用 ACM \path{sigconf} 双栏文档类，中文由 \path{ctex} 的 Fandol 字体支持。
 
 \section{局限性与可继续开展的实验}
 首先，实验只包含一个科学摘要集合，只有三百个测试查询。结果不足以说明方法在网页、法律、代码或中文检索上同样有效。较小集合也使完整稀疏扫描能够在几十毫秒内完成，无法代表百万级文档场景。若扩展到其他 BEIR 数据集，应固定同一开发协议，并重新评价，而不是沿用本数据集的最优参数。

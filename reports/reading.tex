@@ -1,8 +1,7 @@
 \documentclass[sigconf,nonacm]{acmart}
-\usepackage[UTF8,fontset=fandol]{ctex}
-\usepackage{amsmath,amssymb,booktabs,array}
-\settopmatter{printacmref=false,printccs=false}
-\renewcommand{\shortauthors}{Course Project}
+\usepackage[UTF8,scheme=plain,fontset=fandol]{ctex}
+\usepackage{amsmath,booktabs,array}
+\settopmatter{printacmref=false,printccs=false,printfolios=true}
 \newcommand{\RRF}{\operatorname{RRF}}
 \newcommand{\Rel}{\operatorname{Rel}}
 \newcommand{\Recall}{\operatorname{Recall}}
@@ -12,6 +11,7 @@
 \title{排序融合何时有效？\\互惠排名融合的原理、反例与可复现评价设计}
 \subtitle{《信息检索原理》第九周论文阅读报告}
 \author{Course Project}
+\renewcommand{\shortauthors}{Course Project}
 \affiliation{\institution{信息检索原理课程}\city{Beijing}\country{China}}
 \begin{abstract}
 多个检索器给出不同答案时，融合排序既可能利用互补信息，也可能重复放大同一种错误。本文围绕互惠排名融合（Reciprocal Rank Fusion，RRF）的原始论文展开批判性阅读，并结合现代混合检索融合分析与BEIR评价框架，讨论排名、分数、候选集合和评价协议之间的关系。本文将文献证据与自主推导分开：对文献仅概述其可核实结论；通过自行构造的小型排序、参数翻转、分数缩放和重复投票案例，解释RRF的行为与失败条件；进一步给出不依赖测试集调参的课程项目方案。分析表明，RRF的工程吸引力来自其对分数尺度的独立性，而不是对检索器质量、候选深度或参数选择的独立性。合理评价应同时固定输入预算，报告单路基线、相关性、召回上界和查询级差异。本文不将设计中的项目实验作为已完成结果。
@@ -50,7 +50,7 @@ BM25同样使用词项证据，但通过词频饱和与长度归一化调整贡�
 稠密检索可写为$s_D(q,d)=\boldsymbol e_q^\top\boldsymbol e_d$；当向量单位归一化时等于余弦相似度。它与词项方法的差异在于表示空间及训练目标，而不是名字中带有“向量”就必然更准确。对术语、编号与罕见实体的查询，字面匹配仍可能提供重要证据；反过来，向量模型可能弥补同义表达引起的词汇不匹配。
 
 \subsection{为何原始分数不能直接比较}
-假设系统一把A、B的相关性分数记为$(9,8)$，系统二记为$(0.2,0.9)$。相加后A得9.2，B得8.9。如果只把系统二的计分单位乘100，单路排序完全不变，但融合变为A得29、B得98。由此可见，直接加分把分数单位当成了系统权重。
+假设系统一给A、B的分数分别为9和8，系统二分别给0.2和0.9。相加后A得9.2，B得8.9。现在只把系统二的计分单位乘100：单路次序不变，融合却变为A得29、B得98。直接加分实际上把计分单位当成了系统权重。
 
 这不意味着分数毫无价值。分数间隔可能反映模型对两个候选的区分强度。问题在于必须先说明分数的语义、尺度和归一化，再讨论如何利用它。RRF选择绕开计分单位，代价则是只保留顺序信息。这是一项信息取舍，而不是免费获得的稳健性。
 
@@ -269,7 +269,11 @@ CC权重&$\alpha\in\{0,0.1,\ldots,1\}$，仅验证集选择\\
 \subsection{实现、核对与运行产物}
 一个清晰的实现流程为：读入语料并建立索引；每路对每个查询输出带docid、rank、score的运行文件；对相同query连接候选；计算融合；用同一评价器运行；导出逐查询与汇总表。将检索和融合分离后，参数实验可以复用已有运行文件，不必每次重建索引。
 
-RRF只需逐路遍历返回项累加一个docid到分数的字典。累加复杂度为$O(mL)$，若对候选并集完全排序，则另需$O(|C|\log|C|)$。这些是融合本身的成本，不包含检索、编码或索引构建。项目报告应同时区分冷启动、索引和查询阶段；把索引预先缓存后的时间与全流程时间混比，会夸大效率差异。
+RRF逐路遍历返回项，用字典保存文档ID与累加分数。累加的时间复杂度为$O(mL)$。若对候选并集完全排序，整体时间成本为
+\begin{equation}
+ T_{\mathrm{fusion}}=O\bigl(mL+|C|\log|C|\bigr).
+\end{equation}
+这些仅是融合成本，不含检索、编码或索引构建。报告应区分冷启动、索引构建和查询阶段。把缓存后的查询时间与全流程时间混比，会夸大效率差异。
 
 最小正确性核对应包括：排名从1开始；同一路重复docid不重复计票；缺失不贡献；同分次序可复现；手算表\ref{tab:toy}匹配；复制一路等价于增加对应权重；在所有路相同且文档集合一致时，融合次序不变。评价器另需用一个人工标注的小集合检查AP与nDCG，避免把实现错误当成算法结论。
 
