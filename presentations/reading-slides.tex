@@ -1,0 +1,133 @@
+% Compile with XeLaTeX twice. UTF-8. 10 slides, approximately 10 minutes.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage[UTF8,fontset=fandol]{ctex}
+\usepackage{amsmath,booktabs}
+\definecolor{ink}{HTML}{153354}
+\setbeamercolor{structure}{fg=ink}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber\hspace{1em}\vspace{1ex}}
+\setbeamersize{text margin left=10mm,text margin right=10mm}
+\setbeameroption{hide notes}
+\title{多路词法检索的排名融合}
+\subtitle{RRF 的原理、适用条件与实证评估}
+\author{信息检索原理\quad 论文阅读汇报}
+\date{}
+\begin{document}
+\begin{frame}\titlepage
+\note{主论文：Cormack, Clarke, Büttcher, SIGIR 2009. \url{https://doi.org/10.1145/1571941.1572114}。讲稿见reading-讲稿.txt。}
+\end{frame}
+
+\begin{frame}{研究问题：不同排序怎样融合}
+\begin{itemize}\setlength\itemsep{1em}
+\item BM25 与 TF-IDF 对同一查询产生不同排名。
+\item 原始分数的范围、分布和含义不同，直接相加缺少可比性。
+\item RRF 只使用排名，让多个检索器共同提供证据。
+\end{itemize}
+\vfill
+\textbf{待检验的问题：}排名的一致支持，能否抵消单路检索的错误？
+\note{来源：RRF主论文。\url{https://cormack.uwaterloo.ca/cormack/cormacksigir09-rrf.pdf}。应用到BM25/TF-IDF为本课程研究设计，不是原论文的SciFact实验。}
+\end{frame}
+
+\begin{frame}{RRF：排名倒数的加和}
+\[
+ S_{\mathrm{RRF}}(d)=\sum_{j=1}^{m}\frac{\mathbf{1}[d\in L_j]}{c+r_j(d)}
+\]
+\begin{itemize}\setlength\itemsep{0.65em}
+\item $L_j$ 为第 $j$ 路候选列表，排名 $r_j$ 从 1 开始。
+\item 未进入某路列表的文献，该路贡献为 0。
+\item 原论文固定 $c=60$，缓和个别检索器的极高排名。
+\end{itemize}
+\vfill
+只保留顺序信息，也同时舍弃了原始分数的差距。
+\note{公式由原论文的完整排列形式扩展为实际有限候选列表，缺失贡献为0是本项目明确实现约定。原论文c=60在pilot后固定。\url{https://cormack.uwaterloo.ca/cormack/cormacksigir09-rrf.pdf}}
+\end{frame}
+
+\begin{frame}{数值例子：两路共同靠前的文献}
+\centering
+\renewcommand\arraystretch{1.6}
+\begin{tabular}{lrrr}\toprule
+文献 & 排名 1 & 排名 2 & RRF 分数（$c=60$）\\\midrule
+A & 1 & 20 & 0.02889\\
+B & 2 & 2 & \textbf{0.03226}\\
+C & 20 & 1 & 0.02889\\\bottomrule
+\end{tabular}
+\vfill
+\raggedright
+B 在两路均靠前，融合后超过只在一路排名第一的 A、C。
+\note{本页为解释公式的构造例子，不是论文或项目测量数据。A=1/61+1/80，B=2/62。}
+\end{frame}
+
+\begin{frame}{原论文的证据与适用边界}
+\begin{itemize}\setlength\itemsep{0.85em}
+\item 在论文测试的 TREC 排序与 LETOR 设置中，RRF 表现出较强的融合效果。
+\item 无需相关性训练标签，也无需统一各路分数尺度。
+\item 融合依赖输入排序的质量和互补性。
+\item 候选列表之外的相关文献无法通过融合找回。
+\end{itemize}
+\vfill
+\textbf{需要另做实验：}词法方法高度相关时，收益是否仍然存在？
+\note{原论文证据来源：\url{https://doi.org/10.1145/1571941.1572114}。关于候选上限和互补性的讨论是基于公式的分析，不能解释成原论文保证。}
+\end{frame}
+
+\begin{frame}{后续研究：RRF 的参数与分数融合}
+\[
+ S_{\mathrm{CC}}(d)=\alpha\,\widetilde{s}_1(d)+(1-\alpha)\,\widetilde{s}_2(d)
+\]
+\begin{itemize}\setlength\itemsep{0.65em}
+\item Bruch 等研究词法与语义检索的融合，比较 RRF 与凸组合 CC。
+\item 该研究发现 RRF 对参数存在敏感性，调优 CC 在其设置下更好。
+\item 因此 $c=60$ 是可复现的默认值，不能当作所有任务的最优值。
+\end{itemize}
+\note{Bruch, Gai, Ingber, An Analysis of Fusion Functions for Hybrid Retrieval, ACM TOIS 2023. \url{https://arxiv.org/abs/2210.11934}，\url{https://doi.org/10.1145/3596512}。其词法+语义结论不直接等同于本项目词法+词法结论。}
+\end{frame}
+
+\begin{frame}{BEIR 与 SciFact 的检索任务}
+\begin{itemize}\setlength\itemsep{0.8em}
+\item BEIR 提供多领域检索数据、相关性标注与统一评测接口。
+\item SciFact 查询为科学声明，目标为包含证据的文献摘要。
+\item 官方预处理包：5,183 篇文献，300 个测试查询。
+\item 本项目只评估文献检索，不评估支持或反驳分类。
+\end{itemize}
+\note{BEIR论文：\url{https://arxiv.org/abs/2104.08663}。SciFact原论文：\url{https://aclanthology.org/2020.emnlp-main.609/}。数据规模由下载包实测，MD5与BEIR官方wiki一致。}
+\end{frame}
+
+\begin{frame}{课程 Project：比较互补性与代价}
+\begin{itemize}\setlength\itemsep{0.75em}
+\item 单路：BM25、word TF-IDF、char TF-IDF。
+\item 融合：BM25+word、BM25+char、三路 RRF。
+\item 参数对照：固定 $c=60$ 与开发集调优的加权 RRF、CC。
+\item 同时记录排序质量、候选召回与 CPU 查询耗时。
+\end{itemize}
+\vfill
+\textbf{假设：}字符特征可能提供额外召回，也可能增加噪声和耗时。
+\note{本页为已实施课程Project的研究设计，不是三篇论文共同实施的实验。实现和真实结果在project-slides.tex与results/。}
+\end{frame}
+
+\begin{frame}{评测与信息泄漏防范}
+\begin{itemize}\setlength\itemsep{0.75em}
+\item nDCG@10 衡量前列排序，MRR@10关注首个相关结果。
+\item Recall@100 衡量候选覆盖，全部查询做宏平均。
+\item 仅用 train 查询调参数，test 标签只进入最终评估。
+\item 对查询差值做配对 bootstrap，区分平均提升与统计不确定性。
+\end{itemize}
+\note{BEIR评测实现：\url{https://github.com/beir-cellar/beir/blob/main/beir/retrieval/evaluation.py}，\url{https://github.com/beir-cellar/beir/blob/main/beir/retrieval/custom_metrics.py}。bootstrap为本项目分析方法。}
+\end{frame}
+
+\begin{frame}{阅读结论与参考文献}
+RRF 提供简单、便于复现的融合基线。\par\medskip
+其有效性需要结合候选互补性、参数和额外开销评估。
+\vfill
+\footnotesize
+\begin{enumerate}
+\item Cormack, Clarke, Büttcher. RRF. SIGIR 2009.\\
+\href{https://doi.org/10.1145/1571941.1572114}{doi:10.1145/1571941.1572114}
+\item Bruch, Gai, Ingber. An Analysis of Fusion Functions for Hybrid Retrieval. TOIS 2023.\\
+\href{https://arxiv.org/abs/2210.11934}{arXiv:2210.11934}
+\item Thakur et al. BEIR. NeurIPS Datasets and Benchmarks 2021.\\
+\href{https://arxiv.org/abs/2104.08663}{arXiv:2104.08663}
+\end{enumerate}
+\note{补充数据来源：Wadden et al., SciFact, EMNLP 2020, \url{https://aclanthology.org/2020.emnlp-main.609/}。}
+\end{frame}
+\end{document}

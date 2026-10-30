@@ -1,0 +1,578 @@
+[
+  {
+    "category": "largest_losses",
+    "query_id": "294",
+    "query": "Crossover hot spots are not found within gene promoters in Saccharomyces cerevisiae.",
+    "relevant_documents": [
+      {
+        "id": "10874408",
+        "title": "Mapping Meiotic Single-Strand DNA Reveals a New Landscape of DNA Double-Strand Breaks in Saccharomyces cerevisiae"
+      }
+    ],
+    "bm25_ndcg10": 1.0,
+    "rrf_char_ndcg10": 0.0,
+    "rankings": {
+      "bm25": [
+        {
+          "id": "10874408",
+          "score": 26.2277637681,
+          "title": "Mapping Meiotic Single-Strand DNA Reveals a New Landscape of DNA Double-Strand Breaks in Saccharomyces cerevisiae"
+        },
+        {
+          "id": "32638085",
+          "score": 21.4655671203,
+          "title": "Histone acetylation and deacetylation in yeast"
+        },
+        {
+          "id": "21170174",
+          "score": 18.7203527942,
+          "title": "Crossover and noncrossover pathways in mouse meiosis."
+        },
+        {
+          "id": "16237005",
+          "score": 18.6819959729,
+          "title": "Single-RNA counting reveals alternative modes of gene expression in yeast"
+        },
+        {
+          "id": "23604601",
+          "score": 17.8517782209,
+          "title": "Post-transcriptional regulation of IME1 determines initiation of meiosis in Saccharomyces cerevisiae."
+        }
+      ],
+      "tfidf_char": [
+        {
+          "id": "13613916",
+          "score": 0.275191366673,
+          "title": "Glucose repression in Saccharomyces cerevisiae"
+        },
+        {
+          "id": "9704467",
+          "score": 0.253396958113,
+          "title": "in polyploid species"
+        },
+        {
+          "id": "4414481",
+          "score": 0.239808738232,
+          "title": "Calorie restriction extends Saccharomyces cerevisiae lifespan by increasing respiration"
+        },
+        {
+          "id": "42267740",
+          "score": 0.238485217094,
+          "title": "Methylation of histone H3 lysine-79 by Dot1p plays multiple roles in the response to UV damage in Saccharomyces cerevisiae."
+        },
+        {
+          "id": "23604601",
+          "score": 0.227239608765,
+          "title": "Post-transcriptional regulation of IME1 determines initiation of meiosis in Saccharomyces cerevisiae."
+        }
+      ],
+      "rrf_char_k60": [
+        {
+          "id": "32638085",
+          "score": 0.0312805474096,
+          "title": "Histone acetylation and deacetylation in yeast"
+        },
+        {
+          "id": "9704467",
+          "score": 0.0312805474096,
+          "title": "in polyploid species"
+        },
+        {
+          "id": "23604601",
+          "score": 0.0307692307692,
+          "title": "Post-transcriptional regulation of IME1 determines initiation of meiosis in Saccharomyces cerevisiae."
+        },
+        {
+          "id": "42267740",
+          "score": 0.0303308823529,
+          "title": "Methylation of histone H3 lysine-79 by Dot1p plays multiple roles in the response to UV damage in Saccharomyces cerevisiae."
+        },
+        {
+          "id": "21170174",
+          "score": 0.0290309106099,
+          "title": "Crossover and noncrossover pathways in mouse meiosis."
+        }
+      ]
+    }
+  },
+  {
+    "category": "largest_losses",
+    "query_id": "1363",
+    "query": "Venules have a thinner or absent smooth layer compared to arterioles.",
+    "relevant_documents": [
+      {
+        "id": "8290953",
+        "title": "Scaffold-based three-dimensional human fibroblast culture provides a structural matrix that supports angiogenesis in infarcted heart tissue."
+      }
+    ],
+    "bm25_ndcg10": 1.0,
+    "rrf_char_ndcg10": 0.43067655807339306,
+    "rankings": {
+      "bm25": [
+        {
+          "id": "8290953",
+          "score": 17.2391412394,
+          "title": "Scaffold-based three-dimensional human fibroblast culture provides a structural matrix that supports angiogenesis in infarcted heart tissue."
+        },
+        {
+          "id": "1122279",
+          "score": 14.4516753723,
+          "title": "Endothelium-mediated relaxation of porcine collateral-dependent arterioles is improved by exercise training."
+        },
+        {
+          "id": "23513718",
+          "score": 12.4679301048,
+          "title": "Role of soluble guanylate cyclase in dilator responses of the cerebral microcirculation."
+        },
+        {
+          "id": "19140422",
+          "score": 12.3085381289,
+          "title": "Evaluation of human papillomavirus testing in primary screening for cervical abnormalities: comparison of sensitivity, specificity, and frequency of referral."
+        },
+        {
+          "id": "79447",
+          "score": 11.5477277762,
+          "title": "Arteriolar function in visceral adipose tissue is impaired in human obesity."
+        }
+      ],
+      "tfidf_char": [
+        {
+          "id": "34328964",
+          "score": 0.146941438317,
+          "title": "Intimal smooth muscle cell proliferation after balloon catheter injury. The role of basic fibroblast growth factor."
+        },
+        {
+          "id": "39334724",
+          "score": 0.140383481979,
+          "title": "Evaluation of spatial filters to create smoothed maps of health data."
+        },
+        {
+          "id": "1122279",
+          "score": 0.13425257802,
+          "title": "Endothelium-mediated relaxation of porcine collateral-dependent arterioles is improved by exercise training."
+        },
+        {
+          "id": "35271381",
+          "score": 0.130313932896,
+          "title": "Exercise training-induced adaptations in the coronary circulation."
+        },
+        {
+          "id": "23513718",
+          "score": 0.127778053284,
+          "title": "Role of soluble guanylate cyclase in dilator responses of the cerebral microcirculation."
+        }
+      ],
+      "rrf_char_k60": [
+        {
+          "id": "1122279",
+          "score": 0.0320020481311,
+          "title": "Endothelium-mediated relaxation of porcine collateral-dependent arterioles is improved by exercise training."
+        },
+        {
+          "id": "23513718",
+          "score": 0.0312576312576,
+          "title": "Role of soluble guanylate cyclase in dilator responses of the cerebral microcirculation."
+        },
+        {
+          "id": "34328964",
+          "score": 0.0310993249759,
+          "title": "Intimal smooth muscle cell proliferation after balloon catheter injury. The role of basic fibroblast growth factor."
+        },
+        {
+          "id": "8290953",
+          "score": 0.0310993249759,
+          "title": "Scaffold-based three-dimensional human fibroblast culture provides a structural matrix that supports angiogenesis in infarcted heart tissue."
+        },
+        {
+          "id": "6417632",
+          "score": 0.030303030303,
+          "title": "Neutrophilic infiltration within the airway smooth muscle in patients with COPD."
+        }
+      ]
+    }
+  },
+  {
+    "category": "largest_losses",
+    "query_id": "837",
+    "query": "NR5A2 is important in development of endometrial tissues.",
+    "relevant_documents": [
+      {
+        "id": "15928989",
+        "title": "Liver receptor homolog-1 is essential for pregnancy"
+      }
+    ],
+    "bm25_ndcg10": 1.0,
+    "rrf_char_ndcg10": 0.43067655807339306,
+    "rankings": {
+      "bm25": [
+        {
+          "id": "15928989",
+          "score": 22.2539825863,
+          "title": "Liver receptor homolog-1 is essential for pregnancy"
+        },
+        {
+          "id": "1780819",
+          "score": 13.4081434291,
+          "title": "Role of DNA Methylation and Epigenetic Silencing of HAND2 in Endometrial Cancer Development"
+        },
+        {
+          "id": "16346504",
+          "score": 12.0144846855,
+          "title": "LncRNA-GAS5 induces PTEN expression through inhibiting miR-103 in endometrial cancer cells"
+        },
+        {
+          "id": "6121668",
+          "score": 11.658894776,
+          "title": "COX-2 and survivin are overexpressed and positively correlated in endometrial carcinoma."
+        },
+        {
+          "id": "3210545",
+          "score": 11.3539905558,
+          "title": "KRAS gene amplification and overexpression but not mutation associates with aggressive and metastatic endometrial cancer"
+        }
+      ],
+      "tfidf_char": [
+        {
+          "id": "1780819",
+          "score": 0.269814878702,
+          "title": "Role of DNA Methylation and Epigenetic Silencing of HAND2 in Endometrial Cancer Development"
+        },
+        {
+          "id": "6121668",
+          "score": 0.241346538067,
+          "title": "COX-2 and survivin are overexpressed and positively correlated in endometrial carcinoma."
+        },
+        {
+          "id": "16346504",
+          "score": 0.23343937099,
+          "title": "LncRNA-GAS5 induces PTEN expression through inhibiting miR-103 in endometrial cancer cells"
+        },
+        {
+          "id": "26121646",
+          "score": 0.227752298117,
+          "title": "Targeting oxidative stress to treat endometriosis."
+        },
+        {
+          "id": "25263942",
+          "score": 0.207437112927,
+          "title": "Stromal p16 expression differentiates endometrial polyp from endometrial hyperplasia"
+        }
+      ],
+      "rrf_char_k60": [
+        {
+          "id": "1780819",
+          "score": 0.032522474881,
+          "title": "Role of DNA Methylation and Epigenetic Silencing of HAND2 in Endometrial Cancer Development"
+        },
+        {
+          "id": "6121668",
+          "score": 0.0317540322581,
+          "title": "COX-2 and survivin are overexpressed and positively correlated in endometrial carcinoma."
+        },
+        {
+          "id": "16346504",
+          "score": 0.031746031746,
+          "title": "LncRNA-GAS5 induces PTEN expression through inhibiting miR-103 in endometrial cancer cells"
+        },
+        {
+          "id": "15928989",
+          "score": 0.0308861962461,
+          "title": "Liver receptor homolog-1 is essential for pregnancy"
+        },
+        {
+          "id": "25263942",
+          "score": 0.0305361305361,
+          "title": "Stromal p16 expression differentiates endometrial polyp from endometrial hyperplasia"
+        }
+      ]
+    }
+  },
+  {
+    "category": "largest_gains",
+    "query_id": "690",
+    "query": "Less than 10% of the gabonese children with Schimmelpenning-Feuerstein-Mims syndrome (SFM) had a plasma lactate of more than 5mmol/L.",
+    "relevant_documents": [
+      {
+        "id": "18750453",
+        "title": "Assessment of Volume Depletion in Children with Malaria"
+      }
+    ],
+    "bm25_ndcg10": 0.2890648263178879,
+    "rrf_char_ndcg10": 1.0,
+    "rankings": {
+      "bm25": [
+        {
+          "id": "23908217",
+          "score": 21.6506718471,
+          "title": "Bone disease in pediatric patients undergoing dialysis with CAPD or CCPD."
+        },
+        {
+          "id": "8428935",
+          "score": 18.8801976811,
+          "title": "Relationship of physical activity and television watching with body weight and level of fatness among children: results from the Third National Health and Nutrition Examination Survey."
+        },
+        {
+          "id": "4449524",
+          "score": 18.670513631,
+          "title": "Hemoglobin concentration in white, black, and Oriental children: is there a need for separate criteria in screening for anemia?"
+        },
+        {
+          "id": "25938221",
+          "score": 18.6338778481,
+          "title": "The spectrum of retinopathy in adults with Plasmodium falciparum malaria"
+        },
+        {
+          "id": "12991445",
+          "score": 18.3563264631,
+          "title": "Influence of smoking and plasma factors on patency of femoropopliteal vein grafts."
+        }
+      ],
+      "tfidf_char": [
+        {
+          "id": "21870716",
+          "score": 0.130306586623,
+          "title": "Coping and satisfaction with growth hormone treatment among short-stature children."
+        },
+        {
+          "id": "18750453",
+          "score": 0.124819174409,
+          "title": "Assessment of Volume Depletion in Children with Malaria"
+        },
+        {
+          "id": "25420421",
+          "score": 0.122890383005,
+          "title": "Changes in white blood cells and platelets in children with falciparum malaria: relationship to disease outcome."
+        },
+        {
+          "id": "25649714",
+          "score": 0.118489168584,
+          "title": "Mental health problems of homeless children and families: longitudinal study."
+        },
+        {
+          "id": "5132358",
+          "score": 0.113959632814,
+          "title": "Chimeric antigen receptor-modified T cells for acute lymphoid leukemia."
+        }
+      ],
+      "rrf_char_k60": [
+        {
+          "id": "18750453",
+          "score": 0.0304147465438,
+          "title": "Assessment of Volume Depletion in Children with Malaria"
+        },
+        {
+          "id": "5132358",
+          "score": 0.0300904977376,
+          "title": "Chimeric antigen receptor-modified T cells for acute lymphoid leukemia."
+        },
+        {
+          "id": "24906548",
+          "score": 0.0296442687747,
+          "title": "Apolipoprotein E4 as a predictor of outcomes in pediatric mild traumatic brain injury."
+        },
+        {
+          "id": "8428935",
+          "score": 0.0283241542093,
+          "title": "Relationship of physical activity and television watching with body weight and level of fatness among children: results from the Third National Health and Nutrition Examination Survey."
+        },
+        {
+          "id": "25420421",
+          "score": 0.0280681378242,
+          "title": "Changes in white blood cells and platelets in children with falciparum malaria: relationship to disease outcome."
+        }
+      ]
+    }
+  },
+  {
+    "category": "largest_gains",
+    "query_id": "72",
+    "query": "Activator-inhibitor pairs are provided dorsally by Admpchordin.",
+    "relevant_documents": [
+      {
+        "id": "6076903",
+        "title": "Regulation of ADMP and BMP2/4/7 at Opposite Embryonic Poles Generates a Self-Regulating Morphogenetic Field"
+      }
+    ],
+    "bm25_ndcg10": 0.3333333333333333,
+    "rrf_char_ndcg10": 1.0,
+    "rankings": {
+      "bm25": [
+        {
+          "id": "18895793",
+          "score": 10.4864061703,
+          "title": "Activator Control of Nucleosome Occupancy in Activation and Repression of Transcription"
+        },
+        {
+          "id": "16705338",
+          "score": 10.2850691047,
+          "title": "Prediction of Chemical-Protein Interactions Network with Weighted Network-Based Inference Method"
+        },
+        {
+          "id": "11420613",
+          "score": 10.0284116789,
+          "title": "Molecular mechanisms of ribosomal protein gene coregulation."
+        },
+        {
+          "id": "2533768",
+          "score": 9.76727073108,
+          "title": "Workshop: endothelial cell dysfunction leading to diabetic nephropathy : focus on nitric oxide."
+        },
+        {
+          "id": "9929089",
+          "score": 9.76610090412,
+          "title": "Subsequent chemotherapy reverses acquired tyrosine kinase inhibitor resistance and restores response to tyrosine kinase inhibitor in advanced non-small-cell lung cancer"
+        }
+      ],
+      "tfidf_char": [
+        {
+          "id": "1031534",
+          "score": 0.183177217841,
+          "title": "Scaling of Dorsal-Ventral Patterning by Embryo Size-Dependent Degradation of Spemann’s Organizer Signals"
+        },
+        {
+          "id": "6076903",
+          "score": 0.179013237357,
+          "title": "Regulation of ADMP and BMP2/4/7 at Opposite Embryonic Poles Generates a Self-Regulating Morphogenetic Field"
+        },
+        {
+          "id": "1550937",
+          "score": 0.135290086269,
+          "title": "The Transcription Factors Egr2 and Egr3 Are Essential for the Control of Inflammation and Antigen-Induced Proliferation of B and T Cells"
+        },
+        {
+          "id": "39763465",
+          "score": 0.126751199365,
+          "title": "Combinatorial signaling by Sonic hedgehog and Wnt family members induces myogenic bHLH gene expression in the somite."
+        },
+        {
+          "id": "38380061",
+          "score": 0.123532518744,
+          "title": "Localization and requirement for Myosin II at the dorsal-ventral compartment boundary of the Drosophila wing."
+        }
+      ],
+      "rrf_char_k60": [
+        {
+          "id": "6076903",
+          "score": 0.0310544053924,
+          "title": "Regulation of ADMP and BMP2/4/7 at Opposite Embryonic Poles Generates a Self-Regulating Morphogenetic Field"
+        },
+        {
+          "id": "1550937",
+          "score": 0.030578898226,
+          "title": "The Transcription Factors Egr2 and Egr3 Are Essential for the Control of Inflammation and Antigen-Induced Proliferation of B and T Cells"
+        },
+        {
+          "id": "10937190",
+          "score": 0.0284045124899,
+          "title": "Table of Contents"
+        },
+        {
+          "id": "778436",
+          "score": 0.0252525252525,
+          "title": "Negative effect of the transcriptional activator GAL4"
+        },
+        {
+          "id": "18895793",
+          "score": 0.0241453806074,
+          "title": "Activator Control of Nucleosome Occupancy in Activation and Repression of Transcription"
+        }
+      ]
+    }
+  },
+  {
+    "category": "largest_gains",
+    "query_id": "784",
+    "query": "MicroRNA is involved in the regulation of Neural Stem Cell (NSC) differentiation and proliferation dynamic homeostasis",
+    "relevant_documents": [
+      {
+        "id": "2356950",
+        "title": "Epigenetic regulation of miR-184 by MBD1 governs neural stem cell proliferation and differentiation."
+      }
+    ],
+    "bm25_ndcg10": 0.5,
+    "rrf_char_ndcg10": 1.0,
+    "rankings": {
+      "bm25": [
+        {
+          "id": "16999023",
+          "score": 23.7558140042,
+          "title": "Cell Stem Cell Article In Vivo Fate Analysis Reveals the Multipotent and Self-Renewal Capacities of Sox2 + Neural Stem Cells in the Adult Hippocampus"
+        },
+        {
+          "id": "23535770",
+          "score": 23.5244281511,
+          "title": "Potential role of NF-kappaB in adult neural stem cells: the underrated steersman?"
+        },
+        {
+          "id": "2356950",
+          "score": 22.6958307443,
+          "title": "Epigenetic regulation of miR-184 by MBD1 governs neural stem cell proliferation and differentiation."
+        },
+        {
+          "id": "25597580",
+          "score": 21.0842480374,
+          "title": "Quiescent and active hippocampal neural stem cells with distinct morphologies respond selectively to physiological and pathological stimuli and aging."
+        },
+        {
+          "id": "38727075",
+          "score": 18.3425135206,
+          "title": "BMP receptor IA is required in mammalian neural crest cells for development of the cardiac outflow tract and ventricular myocardium."
+        }
+      ],
+      "tfidf_char": [
+        {
+          "id": "2356950",
+          "score": 0.253972947598,
+          "title": "Epigenetic regulation of miR-184 by MBD1 governs neural stem cell proliferation and differentiation."
+        },
+        {
+          "id": "11666252",
+          "score": 0.231841996312,
+          "title": "Maintaining the norm: T-cell homeostasis"
+        },
+        {
+          "id": "1848452",
+          "score": 0.231396153569,
+          "title": "Epigenetic Control of Stem Cell Potential during Homeostasis, Aging, and Disease."
+        },
+        {
+          "id": "7399084",
+          "score": 0.230463802814,
+          "title": "Transcriptional repressor Blimp-1 is essential for T cell homeostasis and self-tolerance"
+        },
+        {
+          "id": "1447990",
+          "score": 0.222163125873,
+          "title": "FOXO4 is necessary for neural differentiation of human embryonic stem cells."
+        }
+      ],
+      "rrf_char_k60": [
+        {
+          "id": "2356950",
+          "score": 0.032266458496,
+          "title": "Epigenetic regulation of miR-184 by MBD1 governs neural stem cell proliferation and differentiation."
+        },
+        {
+          "id": "23535770",
+          "score": 0.0310544053924,
+          "title": "Potential role of NF-kappaB in adult neural stem cells: the underrated steersman?"
+        },
+        {
+          "id": "16999023",
+          "score": 0.0295513373598,
+          "title": "Cell Stem Cell Article In Vivo Fate Analysis Reveals the Multipotent and Self-Renewal Capacities of Sox2 + Neural Stem Cells in the Adult Hippocampus"
+        },
+        {
+          "id": "1848452",
+          "score": 0.0292063492063,
+          "title": "Epigenetic Control of Stem Cell Potential during Homeostasis, Aging, and Disease."
+        },
+        {
+          "id": "15176526",
+          "score": 0.0291986359761,
+          "title": "Actin and serum response factor transduce physical cues from the microenvironment to regulate epidermal stem cell fate decisions"
+        }
+      ]
+    }
+  }
+]

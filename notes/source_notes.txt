@@ -1,0 +1,48 @@
+检索与核对日期：2026-10-30。本文档为来源记录，不是课程教师公告。
+
+1. RRF主论文
+Gordon V. Cormack, Charles L. A. Clarke, Stefan Büttcher. 2009.
+Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods.
+SIGIR '09, 758–759. DOI 10.1145/1571941.1572114.
+作者官网原始PDF：https://cormack.uwaterloo.ca/cormack/cormacksigir09-rrf.pdf
+作者机构出版记录：https://research.google/pubs/reciprocal-rank-fusion-outperforms-condorcet-and-individual-rank-learning-methods/
+已阅读全文两页。k=60在先导实验选定，后续验证不变。
+表1中60不是最高点：k60 MAP .2145；k80 .2147。
+反例：TREC3 CombMNZ .4381 > RRF .4350；TREC9人工最佳 .3519 > RRF .2830。
+LETOR3：CombMNZ .6107 > RRF .6051，差异p=.2。
+报告故意只简短概述来源，主要篇幅为独立例子与推导。
+
+2. 现代融合分析
+Sebastian Bruch, Siyu Gai, Amir Ingber.
+An Analysis of Fusion Functions for Hybrid Retrieval.
+arXiv:2210.11934v2，2023-05-04（v1为2022）。
+原文：https://arxiv.org/html/2210.11934
+metadata：https://arxiv.org/abs/2210.11934v2
+related journal DOI：10.1145/3596512。不是SIGIR2023论文。
+bib采用已直接核验的arxiv版本，以免误填期刊卷期。
+直接核验内容：比较CC和RRF；讨论参数敏感性、分数间距、归一化等价及样本效率。
+报告没有复制原文的实验表格，也不将特定设置中的CC优势写成普适定理。
+
+3. BEIR
+Nandan Thakur, Nils Reimers, Andreas Rücklé, Abhishek Srivastava, Iryna Gurevych.
+BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models.
+NeurIPS 2021 Datasets and Benchmarks Track.
+https://arxiv.org/abs/2104.08663
+论文metadata及摘要已核验。18个公开数据集，多任务跨域，BM25值得保留为基线。
+本报告只把它用于评价框架的背景，不声称运行了完整BEIR基准。
+
+4. 官方版式来源
+ACM官方Overleaf SIG Proceedings模板：
+https://www.overleaf.com/latex/templates/association-for-computing-machinery-acm-sig-conference-proceedings-template/bmvfhcdnxfty
+ACM维护仓库：https://github.com/borisveytsman/acmart
+ACM入口：https://www.acm.org/publications/proceedings-template （本次直接打开403）
+课程报告使用sigconf,nonacm，不编造conference出版、DOI、版权或录用元数据。
+XeLaTeX + ctex Fandol字体，目标兼容Overleaf。
+
+5. 原创分析核对
+手算表：A=(1,3), B=(2,2), C=(3,缺失), D=(缺失,1)，k60。
+A=.03226645849，B=.03225806452，C=.01587301587，D=.01639344262。
+参数反转：X=(1,100),Y=(10,10)，通分后分子810-81k，k10相等。
+大k展开为c/k-sum(rank)/k^2；有限列表与完整排列要分开。
+正仿射CC的权重等价要求变换系数对候选固定，跨查询可变系数不保证同一全局权重等价。
+报告项目章节为计划；没有任何真实运行得分、速度或最优参数的虚构。

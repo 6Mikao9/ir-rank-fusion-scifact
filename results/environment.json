@@ -1,0 +1,32 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+  "numpy": "2.2.6",
+  "scipy": "1.15.3",
+  "sklearn": "1.6.1",
+  "corpus_docs": 5183,
+  "train_queries": 809,
+  "tuning_queries": 200,
+  "test_queries": 300,
+  "candidate_depth": 100,
+  "index_seconds": {
+    "bm25": 0.4866626000002725,
+    "tfidf_word": 0.47880110000005516,
+    "tfidf_char": 13.083288600000742
+  },
+  "dataset_sha256": {
+    "corpus.jsonl": "dec31c8182f3d744c7d2c09423756fd1d17cbef75808db13ba01cc0aab4d1ac6",
+    "queries.jsonl": "8ff84a7c903f722981cd8d595c022660140c51867b27608a6d4910db86080313",
+    "qrels\\train.tsv": "a53f2114831916c096b6c37d9e54da68cef4efdcdbd5ed46533601af972acf1d",
+    "qrels\\test.tsv": "0864bb985e0ca2367ba217977e72004d549054b2b06666ed9d4825ac7c21284c"
+  },
+  "timing_note": "CPU single-query retrieval after one warm-up. Indexing excluded. Fusion latency is sequential sum of separately timed base retrievals plus fusion; no parallel retrieval is assumed.",
+  "bm25": {
+    "k1": 1.2,
+    "b": 0.75,
+    "tokenizer": "unicode word length >=2, lowercase, no stemming or stopwords"
+  },
+  "tfidf_word": "sublinear tf, smooth idf, L2 cosine",
+  "tfidf_char": "char_wb 3-5 grams, min_df2, max_features100000, sublinear tf, smooth idf, L2 cosine"
+}

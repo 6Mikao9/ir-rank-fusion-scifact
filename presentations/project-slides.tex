@@ -1,0 +1,140 @@
+% Compile with XeLaTeX twice. Values from results/*.json, 2026-10-30.
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage[UTF8,fontset=fandol]{ctex}
+\usepackage{amsmath,booktabs}
+\definecolor{ink}{HTML}{153354}
+\setbeamercolor{structure}{fg=ink}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\insertframenumber/\inserttotalframenumber\hspace{1em}\vspace{1ex}}
+\setbeamersize{text margin left=10mm,text margin right=10mm}
+\setbeameroption{hide notes}
+\title{科学声明的证据文献检索}
+\subtitle{多路词法检索融合在 BEIR SciFact 上的评估}
+\author{信息检索原理\quad Project 汇报}
+\date{}
+\begin{document}
+\begin{frame}\titlepage
+\note{本展示的结果来自本项目实际CPU运行，见results/metrics.json、paired_bootstrap.json和environment.json。讲稿见project-讲稿.txt。}
+\end{frame}
+
+\begin{frame}{任务与数据：科学证据文献检索}
+\begin{itemize}\setlength\itemsep{0.85em}
+\item 输入科学声明，从 5,183 篇标题和摘要中检索相关文献。
+\item train：809 个查询，919 对相关性标注。
+\item test：300 个查询，339 对相关性标注，标签均为 1。
+\item 两个划分的查询 ID 无重叠，检索语料库相同。
+\end{itemize}
+\note{数据包原始下载：\url{https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip}，MD5=5f7d1de60b170fc8027bb7898e2efca1。统计由数据包实测。SciFact原论文：\url{https://aclanthology.org/2020.emnlp-main.609/}。}
+\end{frame}
+
+\begin{frame}{单路检索器：不同的词法信号}
+\begin{description}\setlength\itemsep{0.9em}
+\item[BM25] $k_1=1.2,\ b=0.75$，考虑词频饱和与文档长度。
+\item[word TF-IDF] 词级特征，sublinear TF、smooth IDF、L2 余弦。
+\item[char TF-IDF] 词内字符 3--5 gram，最小文频 2，最多 100,000 特征。
+\end{description}
+\vfill
+统一使用标题加摘要。词级分词保留长度至少为 2 的小写 Unicode 单词。
+\note{准确设置见results/environment.json。char使用scikit-learn的char_wb。\url{https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html}。BM25实现为本项目自实现，不声称与Elasticsearch数值完全一致。}
+\end{frame}
+
+\begin{frame}{融合方法与参数对照}
+\[
+ S_{\mathrm{RRF}}(d)=\sum_j\frac{w_j\mathbf{1}[d\in L_j]}{c+r_j(d)}
+\]
+\begin{itemize}\setlength\itemsep{0.6em}
+\item 固定基线：$c=60$、等权，分别融合 word、char 和三路。
+\item 调优 RRF：在开发查询上选择 $c$ 与 BM25 权重。
+\item 分数融合：对归一化 BM25、word 分数做凸组合。
+\end{itemize}
+\note{RRF：\url{https://doi.org/10.1145/1571941.1572114}。分数融合讨论：\url{https://arxiv.org/abs/2210.11934}。本实验的候选截断、权重搜索、归一化规则以项目源码为准。}
+\end{frame}
+
+\begin{frame}{实验协议与复现边界}
+\begin{itemize}\setlength\itemsep{0.75em}
+\item 每路取前 100 个候选，融合后再截断到前 100。
+\item 从 train 固定抽 200 个开发查询，随机种子为 42。
+\item TF-IDF 仅拟合文献语料，测试查询不进入 IDF 学习。
+\item 参数冻结后评估全部 300 个 test 查询，保留逐查询结果和 TREC run。
+\end{itemize}
+\note{来源：results/environment.json、results/tuning.json、scripts/run_experiment.py。完整corpus建索引符合检索任务设定，不属于使用test相关性标签训练。}
+\end{frame}
+
+\begin{frame}{真实查询：改善与退步同时存在}
+\small
+\textbf{改善案例 Q72}\par
+\textit{Activator-inhibitor pairs are provided dorsally by Admpchordin.}\par\smallskip
+目标论文：Regulation of ADMP and BMP2/4/7 at Opposite Embryonic Poles Generates a Self-Regulating Morphogenetic Field\par
+摘要片段：``We discovered that quadruple knockdown of ADMP\ldots''\par
+相关文献排名：BM25 第 7，BM25+char RRF 第 1。\par
+\medskip
+\textbf{退步案例 Q837}\par
+\textit{NR5A2 is important in development of endometrial tissues.}\par\smallskip
+目标论文：Liver receptor homolog-1 is essential for pregnancy\par
+相关文献排名：BM25 第 1，BM25+char RRF 第 4。
+\note{原始查询、标题与摘要来自BEIR SciFact数据包。排名核对results/bm25.trec和rrf_char_k60.trec。Q72相关doc6076903，Q837相关doc15928989。案例按实际变化选取，用于说明可能发生的行为，不作为总体比例估计。检索输出文献的标题、摘要和排名，不判断声明真假。}
+\end{frame}
+
+\begin{frame}{测试结果：字符融合的召回更高}
+\centering
+\small\renewcommand\arraystretch{1.35}
+\begin{tabular}{lrrr}\toprule
+方法 & nDCG@10 & MRR@10 & Recall@100\\\midrule
+BM25 & 0.6596 & 0.6250 & 0.8726\\
+word TF-IDF & 0.6286 & 0.5897 & 0.8916\\
+char TF-IDF & 0.6547 & 0.6034 & 0.9187\\
+RRF：BM25+word & 0.6574 & 0.6195 & 0.8882\\
+RRF：BM25+char & \textbf{0.6662} & \textbf{0.6253} & \textbf{0.9303}\\
+RRF：三路 & 0.6637 & 0.6201 & 0.9259\\\bottomrule
+\end{tabular}
+\vfill
+\raggedright\normalsize
+增加 word 路没有带来更高的前列排序质量。
+\note{来源：results/metrics.json。RRF均为c=60等权。表中最佳仅指本页六种固定配置，不代表显著优于其他方法。}
+\end{frame}
+
+\begin{frame}{调优与统计不确定性}
+\begin{itemize}\setlength\itemsep{0.65em}
+\item 开发集选择 word-RRF：$c=60$、BM25 权重为 2。
+\item 测试 nDCG@10 为 0.6602，BM25 为 0.6596。
+\item CC 选择 BM25 权重 $\alpha=1$，结果退化为 BM25。
+\end{itemize}
+\medskip
+\textbf{char-RRF 相对 BM25：}\par
+nDCG 差值 $+0.0066$，配对 bootstrap 95\% CI 为 $[-0.0119,\ 0.0255]$。
+\vfill
+区间跨 0，当前样本不支持宣称显著提升。
+\note{来源：results/tuning.json、metrics.json、paired_bootstrap.json。bootstrap 2000次，seed=42。char-RRF的逐查询胜/平/负=49/217/34。}
+\end{frame}
+
+\begin{frame}{查询耗时与效果的取舍}
+\centering
+\renewcommand\arraystretch{1.35}
+\begin{tabular}{lrr}\toprule
+方法 & 平均耗时 / ms & P95 / ms\\\midrule
+BM25 & 7.45 & 13.06\\
+char TF-IDF & 34.85 & 41.30\\
+RRF：BM25+char & 42.46 & 51.24\\
+RRF：三路 & 49.83 & 58.70\\\bottomrule
+\end{tabular}
+\vfill
+\raggedright
+CPU 单查询、预热后测量，不计建索引。融合按各路串行耗时加融合计算，不假设并发。
+\note{来源：results/metrics.json、environment.json。耗时受本机硬件与实现影响。本结果不能直接推断线上并发服务的吞吐或SLA。}
+\end{frame}
+
+\begin{frame}{结论与后续改进}
+\begin{itemize}\setlength\itemsep{0.6em}
+\item 本实验中字符路改善候选召回，但增加 CPU 查询开销。
+\item 前列质量的平均增益较小，置信区间包含 0。
+\item 后续可研究并行执行、候选深度和互补性诊断。
+\end{itemize}
+\vfill\footnotesize
+\href{https://doi.org/10.1145/1571941.1572114}{Cormack et al., SIGIR 2009, RRF}\par\smallskip
+\href{https://arxiv.org/abs/2210.11934}{Bruch et al., TOIS 2023, Fusion Functions}\par\smallskip
+\href{https://arxiv.org/abs/2104.08663}{Thakur et al., BEIR 2021}
+\note{结论依据results/metrics.json与paired_bootstrap.json。并行执行与候选深度研究属于未来工作，不是本次已测结果。}
+\end{frame}
+\end{document}

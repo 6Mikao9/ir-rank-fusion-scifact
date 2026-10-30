@@ -1,0 +1,57 @@
+{
+  "seed": 42,
+  "samples": 2000,
+  "comparator": "bm25",
+  "comparisons": {
+    "rrf_word_k60": {
+      "mean_ndcg10_delta": -0.0022648808129749876,
+      "percentile95_ci": [
+        -0.013374269364892962,
+        0.008149742390896683
+      ],
+      "wins": 32,
+      "ties": 235,
+      "losses": 33
+    },
+    "rrf_char_k60": {
+      "mean_ndcg10_delta": 0.0065716414563307185,
+      "percentile95_ci": [
+        -0.011928084786578655,
+        0.025549905027209885
+      ],
+      "wins": 49,
+      "ties": 217,
+      "losses": 34
+    },
+    "rrf_all_k60": {
+      "mean_ndcg10_delta": 0.004087815553277404,
+      "percentile95_ci": [
+        -0.012819974393767104,
+        0.022226960157653627
+      ],
+      "wins": 45,
+      "ties": 217,
+      "losses": 38
+    },
+    "rrf_word_tuned": {
+      "mean_ndcg10_delta": 0.000591322336694913,
+      "percentile95_ci": [
+        -0.003260417713419869,
+        0.004595253247739479
+      ],
+      "wins": 20,
+      "ties": 264,
+      "losses": 16
+    },
+    "score_fusion_tuned": {
+      "mean_ndcg10_delta": 0.0,
+      "percentile95_ci": [
+        0.0,
+        0.0
+      ],
+      "wins": 0,
+      "ties": 300,
+      "losses": 0
+    }
+  }
+}

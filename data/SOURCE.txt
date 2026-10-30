@@ -1,0 +1,3 @@
+URL: https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip
+MD5: 5f7d1de60b170fc8027bb7898e2efca1
+Downloaded: 2026-10-30
